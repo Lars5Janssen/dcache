@@ -467,6 +467,11 @@ This is the pool selection algorithm used in the versions of dCache prior to ver
 **random**:
 This pool selection algorithm selects a pool randomly from the set of available pools.
 
+**p2random**
+This pool selection algorithm selects pools based on "power of two random choices" concept for write requests and a random selection for read requests.
+The key idea behind "power of two" algorithm is random selection of two independent pools and pick the one with lowest space cost. This improves the
+probability of selecting the better option as there were two chances to make a good choice.
+
 **lru**:
 This pool selection algorithm selects the "least recently used" pool, i.e. the one that has not been used the longest.
 
