@@ -554,7 +554,8 @@ public class MoverRequestScheduler {
                                     });
                           }
                       }
-                  });
+                  },
+                  request.getId());
         }
     }
 
@@ -732,7 +733,7 @@ public class MoverRequestScheduler {
             return false;
         }
 
-        public synchronized void transfer(CompletionHandler<Void, Void> completionHandler) {
+        public synchronized void transfer(CompletionHandler<Void, Void> completionHandler, int moverId) {
             try {
                 if (_state != QUEUED) {
                     completionHandler.failed(new InterruptedException("Transfer cancelled"), null);
