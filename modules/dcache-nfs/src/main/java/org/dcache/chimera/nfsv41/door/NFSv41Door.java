@@ -588,6 +588,14 @@ public class NFSv41Door extends AbstractCellComponent implements
                  * disposal on close.
                  */
                 transfer.enforceErrorIfRunning(POISON);
+
+                /*
+                 * If file is deleted, then there will be no CLOSE, so close it manually
+                 */
+                if (transferFinishedMessage.getReturnCode() == CacheException.FILE_NOT_FOUND) {
+                    transfer._openStateid.disposeIgnoreFailures();
+                }
+
             } else {
                 // it's ok to remove read mover as it's safe to re-create it again.
                 _transfers.remove(openStateId);
