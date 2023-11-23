@@ -65,13 +65,18 @@ public class VomsPlugin implements GPlazmaAuthenticationPlugin {
 
     @Override
     public void start() {
-        VOMSTrustStore vomsTrustStore = VOMSTrustStores.newTrustStore(asList(vomsDir));
-        X509CertChainValidatorExt certChainValidator = new CertificateValidatorBuilder()
-              .lazyAnchorsLoading(false)
-              .trustAnchorsUpdateInterval(trustAnchorsUpdateInterval)
-              .trustAnchorsDir(caDir)
-              .build();
-        validator = VOMSValidators.newValidator(vomsTrustStore, certChainValidator);
+        try {
+            VOMSTrustStore vomsTrustStore = VOMSTrustStores.newTrustStore(asList(vomsDir));
+            X509CertChainValidatorExt certChainValidator = new CertificateValidatorBuilder()
+                    .lazyAnchorsLoading(false)
+                    .trustAnchorsUpdateInterval(trustAnchorsUpdateInterval)
+                    .trustAnchorsDir(caDir)
+                    .build();
+            vomsTrustStore.loadTrustInformation();
+            validator = VOMSValidators.newValidator(vomsTrustStore, certChainValidator);
+        } catch (Exception e) {
+            LOGGER.error("Failed to start VOMS plugin: {}", e.getMessage());
+        }
     }
 
     @Override
@@ -89,6 +94,10 @@ public class VomsPlugin implements GPlazmaAuthenticationPlugin {
         boolean hasFQANs = false;
         String ids = null;
         boolean multipleIds = false;
+
+        if (validator == null) {
+            throw new AuthenticationException("VOMS validator is not valid.");
+        }
 
         for (Object credential : publicCredentials) {
             if (CertPaths.isX509CertPath(credential)) {
