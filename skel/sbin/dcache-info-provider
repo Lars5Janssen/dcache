@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #  Script to invoke XSLT program that transforms the output from dCache's
 #  info service into LDIF.  This conversion process is achieved using
