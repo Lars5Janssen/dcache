@@ -2,6 +2,7 @@
 pkgs.mkShell {
   packages = with pkgs; [
     maven
+    rpm
     bash
     ruby
     openssl
