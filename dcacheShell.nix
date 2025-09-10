@@ -3,7 +3,7 @@ pkgs.mkShell {
   packages = with pkgs; [
     maven
     bash
-    # ruby
+    ruby
     openssl
     jdk17
     apacheHttpd
@@ -14,9 +14,6 @@ pkgs.mkShell {
     bash
     */
     ''
-      # zsh -c 'oh-my-posh toggle os'
-      # oh-my-posh toggle os
-      # zsh 'oh-my-posh toggle os'
       zsh
       exit
     '';
